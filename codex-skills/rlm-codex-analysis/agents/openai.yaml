@@ -1,0 +1,4 @@
+interface:
+  display_name: "RLM Codex Analysis"
+  short_description: "Analyze large local contexts with an RLM-style Codex workflow."
+  default_prompt: "Use RLM workflow to analyze this context."

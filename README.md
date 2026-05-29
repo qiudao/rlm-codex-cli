@@ -50,6 +50,21 @@ awareness, a non-interactive `codex exec` mode, sandbox flags, and an existing
 login/quota path. `rlm-codex` keeps only the long-context orchestration layer:
 collect files, split context, ask Codex for partial answers, then synthesize.
 
+The Skill wrapper in this repo is also motivated by the Claude Code dynamic
+workflows discussion, especially this thread:
+
+```text
+https://x.com/a1zhang/status/2060071701879066626
+```
+
+The product lesson is to separate the natural agent entry point from the
+deterministic executor:
+
+- Skill: when to use the workflow and how Codex should orchestrate it
+- CLI/script: repeatable file collection, chunking, worker calls, and synthesis
+- filesystem workspace: future place for resumable chunks, evidence, verifier
+  passes, and cached results
+
 ## Requirements
 
 - Python 3.9+
@@ -109,6 +124,40 @@ Optional editable install:
 ```bash
 python3 -m pip install -e .
 rlm-codex --help
+```
+
+## Codex Skill
+
+This repository includes a Codex Skill definition in:
+
+```text
+codex-skills/rlm-codex-analysis/
+```
+
+It is intended to be installed locally at:
+
+```text
+~/.codex/skills/rlm-codex-analysis/
+```
+
+On this machine it is already installed there. The skill does not replace the
+CLI. It gives Codex a natural trigger and workflow, while the CLI remains the
+testable executor.
+
+Manual install or refresh:
+
+```bash
+mkdir -p ~/.codex/skills
+cp -R codex-skills/rlm-codex-analysis ~/.codex/skills/
+chmod +x ~/.codex/skills/rlm-codex-analysis/scripts/query.py
+```
+
+Then ask Codex for tasks such as:
+
+```text
+Use RLM workflow to analyze this PDF.
+Use rlm-codex-analysis to compare the paper with this repository.
+Run a long-context workflow over this log directory.
 ```
 
 ## Usage
