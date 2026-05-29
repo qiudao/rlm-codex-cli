@@ -28,6 +28,28 @@ a whole source tree. This tool acts as a thin long-context preprocessor:
 It is inspired by Recursive Language Model style workflows, but stays pragmatic:
 the recursion happens at the CLI layer through repeated `codex exec` calls.
 
+## Background
+
+This project was created after reading the Recursive Language Models paper and
+the accompanying minimal implementation:
+
+- Paper: [Recursive Language Models](https://arxiv.org/abs/2512.24601)
+- Paper PDF: [arXiv PDF](https://arxiv.org/pdf/2512.24601)
+- Original RLM codebase: [alexzhang13/rlm](https://github.com/alexzhang13/rlm)
+- Minimal reference project: [alexzhang13/rlm-minimal](https://github.com/alexzhang13/rlm-minimal)
+
+The original RLM idea is to place long context in an external environment, let a
+root model inspect and transform that context through code, and recursively call
+sub-models over smaller pieces. The minimal project demonstrates that pattern
+with a Python REPL and OpenAI API calls.
+
+This repository adapts the idea for a different local workflow: instead of
+building another OpenAI API client, it uses the already-installed Codex CLI as
+the reasoning backend. The reason is practical: Codex already has local project
+awareness, a non-interactive `codex exec` mode, sandbox flags, and an existing
+login/quota path. `rlm-codex` keeps only the long-context orchestration layer:
+collect files, split context, ask Codex for partial answers, then synthesize.
+
 ## Requirements
 
 - Python 3.9+
